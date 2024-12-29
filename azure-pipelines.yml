@@ -1,0 +1,58 @@
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+  IISWebsiteName: 'QASite'
+resources: 
+ pipelines: 
+      - pipeline: 'buildpipeline' #to fill
+        project: 'YMLWebAPI'
+        source: ''
+        branch: 'main'
+
+stages:
+  - stage: 'Deploywebsite'
+    displayName: 'Display web site'
+    pool: 'windows-latest'
+    
+    jobs:
+    - deployment: Deploywebsite
+      displayName: 'Display web site'
+      environment: 'Windows10.MyServerVM'
+      strategy:
+       runOnce:
+           deploy:
+            steps:
+                 - checkout: none
+                 - download: 'buildpipeline'
+                   name: 'DownloadBuildArtifacts'
+                   displayName: 'Download Build Artifact'
+                   artifact: ''  
+                 - task: IISWebAppManagementOnMachineGroup@0
+                   name: 'StopIIS'
+                   displayName: 'Stop IIS Website'
+                   inputs:
+                       IISDeploymentType: 'IISWebsite'
+                       ActionIISWebsite: 'StopWebsite'
+                       StartStopWebsiteName: '${{ variables.IISWebsiteName }}'
+                 - task: IISWebAppDeploymentOnMachineGroup@0
+                   name: 'DeployIIS'
+                   displayName: 'Deploy IIS Website'
+                   inputs:
+                        WebSiteName: '${{ variables.IISWebsiteName }}'
+                        Package: '$(Pipeline.Workspace)\buildpipeline\Artifactname' #to change
+                 - task: IISWebAppManagementOnMachineGroup@0
+                   name: 'StartIIS'
+                   displayName: 'Start IIS Website'
+                   inputs:
+                     IISDeploymentType: 'IISWebsite'
+                     ActionIISWebsite: 'StartWebsite'
+                     StartStopWebsiteName: '$${{ variables.IISWebsiteName }}'
+
+steps:
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
