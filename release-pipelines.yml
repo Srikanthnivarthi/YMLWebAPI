@@ -43,12 +43,12 @@ stages:
                    inputs:
                        IISDeploymentType: 'IISWebsite'
                        ActionIISWebsite: 'StopWebsite'
-                       StartStopWebsiteName: '$((variables.IISWebsiteName))'
+                       StartStopWebsiteName: '${{ variables.IISWebsiteName }}'
                  - task: IISWebAppDeploymentOnMachineGroup@0
                    name: 'DeployIIS'
                    displayName: 'Deploy IIS Website'
                    inputs:
-                        WebSiteName: '$((variables.IISWebsiteName))'
+                        WebSiteName: '${{ variables.IISWebsiteName }}'
                         Package: '$(Pipeline.Workspace)\buildpipeline\Artifactname' #to change
                  - task: IISWebAppManagementOnMachineGroup@0
                    name: 'StartIIS'
@@ -56,7 +56,7 @@ stages:
                    inputs:
                      IISDeploymentType: 'IISWebsite'
                      ActionIISWebsite: 'StartWebsite'
-                     StartStopWebsiteName: '$((variables.IISWebsiteName))'
+                     StartStopWebsiteName: '$${{ variables.IISWebsiteName }}'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
