@@ -1,4 +1,4 @@
-﻿Trigger:
+﻿trigger:
 - master
 variables:
 - name: BuildParameters.RestoreBuildProjects
