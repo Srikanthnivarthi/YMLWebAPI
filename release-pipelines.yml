@@ -22,7 +22,7 @@ resources:
 stages:
   - stage: 'Deploywebsite'
     displayName: 'Display web site'
-    pool: 'windows-latest
+    pool: 'windows-latest'
     
     jobs:
     - deployment: Deploywebsite
