@@ -35,15 +35,21 @@ stages:
                  - checkout: none
                  - download: 'buildpipeline'
                    name: 'DownloadBuildArtifacts'
-                   displayName: 'Download Build Artifact
-                   artifact: ''# to fill
-                   - task: IISWebAppManagementOnMachineGroup@0
-                     name: 'StopIIS'
-                     displayName: 'Stop IIS Website'
-                     inputs:
+                   displayName: 'Download Build Artifact'
+                   artifact: ''  
+                 - task: IISWebAppManagementOnMachineGroup@0
+                   name: 'StopIIS'
+                   displayName: 'Stop IIS Website'
+                   inputs:
                        IISDeploymentType: 'IISWebsite'
                        ActionIISWebsite: 'StopWebsite'
-                       StartStopWebsiteName: '$(( variables.IISWebsiteName ))'
+                       StartStopWebsiteName: '$((variables.IISWebsiteName))'
+                 - task: IISWebAppDeploymentOnMachineGroup@0
+                   name: 'DeployIIS'
+                   displayName: 'Deploy IIS Website'
+                   inputs:
+                        WebSiteName: '$((variables.IISWebsiteName))'
+                        Package: '$(Pipeline.Workspace)\buildpipeline\Artifactname' #to change
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
