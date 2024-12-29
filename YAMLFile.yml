@@ -1,4 +1,4 @@
-﻿trigger:
+﻿Trigger:
 - master
 variables:
 - name: BuildParameters.RestoreBuildProjects
@@ -6,6 +6,11 @@ variables:
 - name: BuildParameters.TestProjects
   value: '**/*[Tt]ests/*.csproj'
 name: $(date:yyyyMMdd)$(rev:.r)
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: master
 jobs:
 - job: Job_1
   displayName: Agent job 1
@@ -13,7 +18,8 @@ jobs:
     name: Neotechagentpool
   steps:
   - checkout: self
-    fetchDepth: 1
+    clean: true
+    fetchTags: false
   - task: DotNetCoreCLI@2
     displayName: Restore
     inputs:
@@ -30,7 +36,6 @@ jobs:
     displayName: Test
     enabled: False
     inputs:
-      ConnectedServiceName: 95c3f0b5-554d-4295-ac22-1a50b4f02144
       command: test
       projects: $(BuildParameters.TestProjects)
       arguments: --configuration $(BuildConfiguration)
