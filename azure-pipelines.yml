@@ -9,7 +9,7 @@ variables:
   IISWebsiteName: 'QASite'
 resources: 
  pipelines: 
-      - pipeline: 'buildpipeline' #to fill
+      - pipeline: 'BuildPipeline' #to fill
         project: 'YMLWebAPI'
         source: 'BuildPipeline'
         branch: 'main'
@@ -28,7 +28,7 @@ stages:
            deploy:
             steps:
                  - checkout: none
-                 - download: 'buildpipeline'
+                 - download: 'BuildPipeline'
                    name: 'DownloadBuildArtifacts'
                    displayName: 'Download Build Artifact'
                    artifact: 'drop'  
