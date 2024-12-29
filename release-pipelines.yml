@@ -27,8 +27,13 @@ stages:
     jobs:
     - deployment: Deploywebsite
       displayName: 'Display web site'
-      environment: ''
-
+      environment: 'Windows10.MyServerVM'
+      strategy:
+       runOnce:
+           deploy:
+            steps:
+                 - checkout: none
+                 - download: 'buildpipeline' 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
