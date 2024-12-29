@@ -17,12 +17,12 @@ resources:
 stages:
   - stage: 'Deploywebsite'
     displayName: 'Display web site'
-    pool: 'windows-latest'
+    pool: 'default'
     
     jobs:
     - deployment: Deploywebsite
       displayName: 'Display web site'
-      environment: 'Windows10.MyServerVM'
+      environment: 'Windows10'
       strategy:
        runOnce:
            deploy:
