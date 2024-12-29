@@ -11,7 +11,7 @@ resources:
  pipelines: 
       - pipeline: 'buildpipeline' #to fill
         project: 'YMLWebAPI'
-        source: ''
+        source: 'BuildPipeline'
         branch: 'main'
 
 stages:
@@ -31,7 +31,7 @@ stages:
                  - download: 'buildpipeline'
                    name: 'DownloadBuildArtifacts'
                    displayName: 'Download Build Artifact'
-                   artifact: ''  
+                   artifact: 'drop'  
                  - task: IISWebAppManagementOnMachineGroup@0
                    name: 'StopIIS'
                    displayName: 'Stop IIS Website'
@@ -44,7 +44,7 @@ stages:
                    displayName: 'Deploy IIS Website'
                    inputs:
                         WebSiteName: '${{ variables.IISWebsiteName }}'
-                        Package: '$(Pipeline.Workspace)\buildpipeline\Artifactname' #to change
+                        Package: '$(Pipeline.Workspace)\buildpipeline\drop'
                  - task: IISWebAppManagementOnMachineGroup@0
                    name: 'StartIIS'
                    displayName: 'Start IIS Website'
@@ -52,7 +52,3 @@ stages:
                      IISDeploymentType: 'IISWebsite'
                      ActionIISWebsite: 'StartWebsite'
                      StartStopWebsiteName: '$${{ variables.IISWebsiteName }}'
-
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
