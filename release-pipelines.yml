@@ -50,6 +50,14 @@ stages:
                    inputs:
                         WebSiteName: '$((variables.IISWebsiteName))'
                         Package: '$(Pipeline.Workspace)\buildpipeline\Artifactname' #to change
+                 - task: IISWebAppManagementOnMachineGroup@0
+                   name: 'StartIIS'
+                   displayName: 'Start IIS Website'
+                   inputs:
+                     IISDeploymentType: 'IISWebsite'
+                     ActionIISWebsite: 'StartWebsite'
+                     StartStopWebsiteName: '$((variables.IISWebsiteName))'
+
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
