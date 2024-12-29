@@ -36,8 +36,10 @@ stages:
                  - download: 'buildpipeline'
                    name: 'DownloadBuildArtifacts'
                    displayName: 'Download Build Artifact
-                   artifact; ''# to fill
+                   artifact: ''# to fill
                    - task: IISWebAppManagementOnMachineGroup@0
+                     name: 'StopIIS'
+                     displayName: 'Stop IIS Website'
                      inputs:
                        IISDeploymentType: 'IISWebsite'
                        ActionIISWebsite: 'StopWebsite'
