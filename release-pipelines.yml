@@ -11,10 +11,10 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  IISWebsitename: 'QASite'
+  IISWebsiteName: 'QASite'
 resources: 
  pipelines: 
-      - pipeline: 'buildpipeline'
+      - pipeline: 'buildpipeline' #to fill
         project: 'YMLWebAPI'
         source: ''
         branch: 'main'
@@ -33,7 +33,15 @@ stages:
            deploy:
             steps:
                  - checkout: none
-                 - download: 'buildpipeline' 
+                 - download: 'buildpipeline'
+                   name: 'DownloadBuildArtifacts'
+                   displayName: 'Download Build Artifact
+                   artifact; ''# to fill
+                   - task: IISWebAppManagementOnMachineGroup@0
+                     inputs:
+                       IISDeploymentType: 'IISWebsite'
+                       ActionIISWebsite: 'StopWebsite'
+                       StartStopWebsiteName: '$(( variables.IISWebsiteName ))'
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
