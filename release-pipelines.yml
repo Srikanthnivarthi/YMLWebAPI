@@ -12,7 +12,12 @@ pool:
 variables:
   buildConfiguration: 'Release'
   IISWebsitename: 'QASite'
-
+resources: 
+ pipelines: 
+      - pipeline: 'buildpipeline'
+        project: 'YMLWebAPI'
+        source: ''
+        branch: 'main'
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
